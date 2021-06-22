@@ -1,0 +1,28 @@
+
+注意，这个模板可能因为typora的格式问题而不能够显示完全，所以我用txt来重写了，而且小心makefile的缩进与空格。
+
+main: main.cpp a.cpp b.cpp c.cpp d.cpp
+ 	g++ -o main main.cpp
+
+
+
+main : IteratorBase.o LinearDataStruct.o Queue.o Stack.o main.o
+ 	g++ -o main IteratorBase.o LinearDataStruct.o Queue.o Stack.o main.o -std=c++11 
+
+%.o: %.cpp
+	 g++ -c -o $@ $<
+
+clean: 
+ 	rm main IteratorBase.o LinearDataStruct.o Queue.o Stack.o main.o
+
+
+
+main : Container.o main.o
+	g++ -o main Container.o main.o -std=c++11 
+
+%.o: %.cpp
+	g++ -c -o $@ $<
+
+clean: 
+	rm main Container.o main.o
+

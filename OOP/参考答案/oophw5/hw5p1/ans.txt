@@ -1,0 +1,30 @@
+1. list可以，queue不行。尝试在43行插入以下代码：
+    else if (base == "list")
+        cont = new Container<A, list<A>>;
+    else if (base == "queue")
+        cont = new Container<A, queue<A>>;
+如果注释掉后两行一切正常，但是加入对queue的支持以后无法编译。
+原因：list有迭代器，因此可以用Container.h中的函数模板。但是queue本身没有迭代器，因此在base.begin()的时候会报错。
+
+2. 模板代替函数：可以。但是同时需要修该main.cpp中的函数。
+template <class A, class C>
+void start() {
+    Container<A, C>* cont = new Container<A, C>;
+    work<A,C>(cont);
+    delete cont;
+}
+template <class A>
+void start(const string &base) {
+    if(base == "vector")
+        start<A, vector<A>>();
+    else if(base == "multiset")
+        start<A, multiset<A>>;
+}
+虚函数代替模板：可以。但是需要重复多次代码。
+class BasicContainer_int;
+class BasicContainer_str;
+class Container_int_vec;
+class Container_int_lis;
+class Container_str_vec;
+class Container_str_lis;
+都需要单独写。

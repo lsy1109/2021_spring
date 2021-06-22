@@ -1,0 +1,11 @@
+L7处，uid = WrapperCounter::getUID(type());
+这里在构造函数中调用其他函数，则只能调用本地版本；因此不能达到题目中的用意（即返回对象的实际类型）。因此利用类似上周Vehicle、car、motor的思路，直接在对象变量中添加一个type字符串记录真正类型，也就是string type_;。同时对StringWrapper、ChineseStringWrapper的构造函数进行改造，保证传入对应类型的字符串。
+
+L34处，~StringWrapper() { delete ptr; }
+StringWrapper的析构函数不应该当只delete ptr处，而是释放整个字符串所占内存。因此应当使用delete[] ptr;替代。
+
+L47处，~ChineseStringWrapper() { delete ptr; }
+由于ChineseStringWrapper是StringWrapper的子类，因此执行析构函数时会先执行StringWrapper的析构函数；此时ptr已经被释放，再经过ChineseStringWrapper的析构函数释放就会造成错误，因此将析构函数改为~ChineseStringWrapper() {}，即什么都不做。
+
+L49处，int length(bool rawChars) {
+这里不会得到期望的输出"Length of *csw: 18"，因此需要给rawChars传入默认值，此行改为int length(bool rawChars = true) {。

@@ -1,0 +1,41 @@
+include control.mak
+
+obj = f1.o f2.o f3.o f4.o main.o
+index =
+ifeq (TRUE,$(F1))
+	index += -D __F1__
+endif
+
+ifeq (TRUE,$(F2))
+	index += -D __F2__
+endif
+
+ifeq (TRUE,$(F3))
+	index += -D __F3__
+endif
+
+
+ifeq (TRUE,$(F4))
+	index += -D __F4__
+endif
+
+main : $(obj)
+	g++ -o main $(obj)
+
+f1.o : f1.cpp f1.h
+	g++ -c  f1.cpp -o f1.o
+
+f2.o : f2.cpp f2.h
+	g++ -c  f2.cpp -o f2.o
+
+f3.o : f3.cpp f3.h
+	g++ -c  f3.cpp -o f3.o
+
+f4.o : f4.cpp f4.h
+	g++ -c  f4.cpp -o f4.o
+
+main.o : main.cpp control.mak
+	g++ -c -o main.o main.cpp $(index)
+
+clean :
+	rm -f $(obj) main
